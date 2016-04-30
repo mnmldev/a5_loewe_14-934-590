@@ -7,7 +7,7 @@
 struct rbTree{
   struct rbNode* root;
   struct rbNode* nil;
-}
+};
 
 struct rbNode {
     int key;
@@ -16,6 +16,22 @@ struct rbNode {
     struct rbNode* rChild;
     struct rbNode* parent;
 };
+
+void printTree(struct TreeNode *root);
+struct rbNode* newNode(int key, struct rbTree* tree);
+void insert(struct rbNode * nodeToInsert, struct rbTree * tree);
+int isLeftChild(struct rbNode* node);
+struct rbNode* getUncle(struct rbNode* node);
+void rightRotate(struct rbTree* tree, struct rbNode* node);
+void rbFixup(struct rbTree* tree, struct rbNode** insertedNode);
+void rbInsert(int key, struct rbTree** tree);
+void printTreeRecursive(struct TreeNode *root);
+
+int int main() {
+  /* code */
+  return 0;
+}
+
 struct rbNode* newNode(int key, struct rbTree* tree){
   struct rbNode *nodeToInsert = malloc(sizeof(struct rbNode));
   nodeToInsert->key = key;
@@ -42,9 +58,11 @@ void insert(struct rbNode * nodeToInsert, struct rbTree * tree) {
     else
         oneDelayed->lChild = nodeToInsert;
 }
+
 int isLeftChild(struct rbNode* node){
   return(node->parent->parent->lChild== node?1:0);
 }
+
 struct rbNode* getUncle(struct rbNode* node){
   if (isLeftChild(node->parent)) {
     return node->parent-parent->rChild;
@@ -52,6 +70,7 @@ struct rbNode* getUncle(struct rbNode* node){
     return node->parent->parent->lChild;
   }
 }
+
 void rightRotate(struct rbTree* tree, struct rbNode* node) {
   struct rbNode* newParent = node->lChild;
   int isNodeLeftChild = isLeftChild(node);
@@ -67,6 +86,7 @@ void rightRotate(struct rbTree* tree, struct rbNode* node) {
   node->lChild->parent = node;
   newParent->rChild = node;
 }
+
 void rbFixup(struct rbTree* tree, struct rbNode** insertedNode){
   if ((*insertedNode)== (tree)->root) {
     (*insertedNode)->color = black;
@@ -88,11 +108,13 @@ void rbFixup(struct rbTree* tree, struct rbNode** insertedNode){
     }
   }
 }
+
 void rbInsert(int key, struct rbTree** tree) {
   struct rbNode* node = newNode(key, tree);
   insert(node, tree);
   rbFixup(tree , node);
 }
+
 void printTreeRecursive(struct TreeNode *root) {
     if (root == NULL)
         return;
